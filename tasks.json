@@ -1,0 +1,40 @@
+[
+    {
+        "_id":"1",
+        "task":"Wyniesienie śmieci",
+        "description":"Wynieść śmieci z domu",
+        "date":"24.05.2021"
+    },
+    {
+        "_id":"2",
+        "task":"Wyniesienie butelek",
+        "description":"Wynieść butelki z domu",
+        "date":"24.05.2021"
+    },
+    {
+        "_id":"3",
+        "task":"Umyć kuchnie",
+        "description":"Umyć zlew, lodówkę, kuchenkę gazową i posprzątać w szafach",
+        "date":"24.05.2021"
+    },
+    {
+        "_id":"4",
+        "task":"Iść do pracy",
+        "description":"Muszę zacząć się zbierać około 8 żeby być punktualnie o 9 w pracy",
+        "date":"24.05.2021"
+    },
+    {
+        "_id":"5",
+        "task":"Pójść na trening",
+        "description":"Trening pleców i nóg, po treningu kardio 30min na orbitreku",
+        "date":"24.05.2021"
+    },
+
+    {
+        "_id":"6",
+        "task":"Zapłacić czynsz",
+        "description":"Wykonać przeleew z banku na konto właściciela",
+        "date":"24.05.2021"
+    }
+    
+]
