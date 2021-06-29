@@ -11,41 +11,36 @@ import {
     CheckBox,
 } from 'react-native';
 
-const AddNewTask = (props) => {
+const EditTask = (props) => {
     const navigation = useNavigation();
-    console.log(props.route);
+    console.log(props.route.params.routeParams.routeParams.token);
 
     const [state, setState] = useState({
-        description: '',
-        completed: false,
+        completed: props.route.params.completed,
     });
 
-    const handleAddingTask = () => {
+    const handleUpdateTask = () => {
         if (state.description == '') return;
         console.log(state);
         axios
-            .post('https://kmaj-task-manager.herokuapp.com/task', state, {
-                headers: {
-                    Authorization: `Bearer ${props.route.params.token}`,
-                },
-            })
+            .patch(
+                `https://kmaj-task-manager.herokuapp.com/task/${props.route.params.routeParams.taskId}`,
+                state,
+                {
+                    headers: {
+                        Authorization: `Bearer ${props.route.params.routeParams.routeParams.token}`,
+                    },
+                }
+            )
             .then((e) => {
                 // console.log(e.data);
                 navigation.navigate('HomeScreen');
             })
             .catch((error) => console.log(error));
     };
-    console.log(state);
 
     return (
         <View>
-            <Text style={styles.description}>Task:</Text>
-            <TextInput
-                style={styles.textInput}
-                onChangeText={(text) =>
-                    setState({ ...state, description: text })
-                }
-            />
             <Text style={styles.description}>Completed:</Text>
             <CheckBox
                 style={styles.textInput}
@@ -54,7 +49,7 @@ const AddNewTask = (props) => {
                     setState({ ...state, completed: status })
                 }
             />
-            <TouchableOpacity style={styles.button} onPress={handleAddingTask}>
+            <TouchableOpacity style={styles.button} onPress={handleUpdateTask}>
                 <Text>Add</Text>
             </TouchableOpacity>
         </View>
@@ -110,4 +105,4 @@ const styles = StyleSheet.create({
     data: { marginLeft: 30, marginRight: 30, fontSize: 18 },
 });
 
-export default AddNewTask;
+export default EditTask;

@@ -8,23 +8,44 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ButtonWithNav from '../Components/ButtonWithNav';
+import ButtonWithoutNav from '../Components/ButtonWithoutNav';
+import { useState } from 'react';
+import axios from 'axios';
 
 function Register(props) {
+    const navigation = useNavigation();
+    const [state, setState] = useState({
+        username: '',
+        email: '',
+        password: '',
+    });
+
+    const handleRegister = () => {
+        if (state.name === '' || state.email === '' || state.password === '')
+            return;
+        console.log(state);
+        axios
+            .post('https://kmaj-task-manager.herokuapp.com/users', state)
+            .then((e) => {
+                // console.log(e.data);
+                const dataToPass = e.data;
+                navigation.navigate('MainScreen', dataToPass);
+            })
+            .catch((error) => console.log(error));
+    };
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Please register</Text>
+            <Text style={styles.title}>Register</Text>
             <View style={styles.inputContainer}>
                 <View style={styles.loginDiv}>
                     <TextInput
                         style={styles.inputs}
-                        placeholder="Login"
-                    ></TextInput>
-                </View>
-                <View style={styles.loginDiv}>
-                    <TextInput
-                        style={styles.inputs}
                         passwordRules="true"
-                        placeholder="Password"
+                        placeholder="name"
+                        onChangeText={(text) =>
+                            setState({ ...state, name: text })
+                        }
                     ></TextInput>
                 </View>
                 <View style={styles.loginDiv}>
@@ -32,15 +53,37 @@ function Register(props) {
                         style={styles.inputs}
                         passwordRules="true"
                         placeholder="E-mail"
+                        onChangeText={(text) =>
+                            setState({ ...state, email: text })
+                        }
+                    ></TextInput>
+                </View>
+                <View style={styles.loginDiv}>
+                    <TextInput
+                        style={styles.inputs}
+                        secureTextEntry={true}
+                        passwordRules="true"
+                        placeholder="Password"
+                        onChangeText={(text) =>
+                            setState({ ...state, password: text })
+                        }
                     ></TextInput>
                 </View>
             </View>
-            <ButtonWithNav
+            <ButtonWithoutNav
                 style={styles.button}
+                textStyle={styles.btnText}
+                onClick={handleRegister}
+            >
+                Register
+            </ButtonWithoutNav>
+
+            <ButtonWithNav
+                style={styles.buttonToLogin}
                 textStyle={styles.btnText}
                 navigateTo="Login"
             >
-                Register
+                Click here to login
             </ButtonWithNav>
         </View>
     );
@@ -60,8 +103,8 @@ const styles = StyleSheet.create({
         height: 1000,
     },
     title: {
-        fontSize: 40,
-        fontWeight: 'bold',
+        fontSize: 36,
+        // fontFamily: 'Helvetica',
         textAlign: 'center',
         marginTop: 30,
         color: '#f56618',
@@ -88,6 +131,14 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginHorizontal: 25,
         marginTop: 50,
+    },
+    buttonToLogin: {
+        padding: 15,
+        alignSelf: 'center',
+        borderRadius: 100,
+        marginBottom: 20,
+        marginHorizontal: 25,
+        // marginTop: 50,
     },
     btnText: {
         color: 'white',

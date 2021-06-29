@@ -1,71 +1,46 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { useState, useEffect } from 'react';
-import Task from './Task';
 import axios from 'axios';
+import { useState, useEffect } from 'react';
+import ButtonWithoutNav from '../Components/ButtonWithoutNav';
 import ButtonWithNav from '../Components/ButtonWithNav';
 
-function HomeScreen(props) {
+function AccountInfo(props) {
     const route = useRoute();
-    const [tasks, setTasks] = useState([]);
+    const [accountInfo, setAccountInfo] = useState({});
 
     // console.log(route.params);
 
     useEffect(() => {
         const fetchData = async () => {
             const result = await axios.get(
-                'https://kmaj-task-manager.herokuapp.com/task',
+                'https://kmaj-task-manager.herokuapp.com/users/me',
                 {
                     headers: { Authorization: `Bearer ${route.params.token}` },
                 }
             );
-            setTasks(result.data);
+            setAccountInfo(result.data);
         };
         fetchData();
-    }, [tasks]);
-
-    const taskArr = tasks.map((task) => {
-        let taskDate = new Date(task.createdAt);
-        let hours =
-            String(taskDate.getHours()).length > 1
-                ? taskDate.getHours()
-                : '0' + taskDate.getHours();
-        let minutes =
-            String(taskDate.getMinutes()).length > 1
-                ? taskDate.getMinutes()
-                : '0' + taskDate.getMinutes();
-
-        const time =
-            taskDate.getDate() +
-            '.' +
-            '0' +
-            taskDate.getMonth() +
-            ' ' +
-            hours +
-            ':' +
-            minutes;
-        return (
-            <Task
-                key={task._id}
-                _id={task._id}
-                data={time}
-                routeParams={route.params}
-            >
-                {task.description}
-            </Task>
-        );
-    });
-
+    }, []);
+    console.log(accountInfo);
     return (
         <View style={styles.container}>
             <View style={styles.taskWrapper}>
-                <Text style={styles.sectionTitle}>Tasks:</Text>
-                <View style={styles.items}>{taskArr}</View>
+                <Text style={styles.sectionTitle}>
+                    Witaj {accountInfo.name}
+                </Text>
+                <Text style={styles.sectionTitle}>E-mail:</Text>
+                <Text>{accountInfo.email}</Text>
+                <Text style={styles.sectionTitle}>Konto stworzono:</Text>
+                <Text>{accountInfo.createdAt}</Text>
+                <Text style={styles.sectionTitle}>Ostatnia edycja konta:</Text>
+                <Text>{accountInfo.updatedAt}</Text>
+                <ButtonWithNav navigateTo="EditAccount" data={route.params}>
+                    Edytuj konto
+                </ButtonWithNav>
             </View>
-            <ButtonWithNav navigateTo="addNewTask" data={route.params}>
-                Add new task
-            </ButtonWithNav>
         </View>
     );
 }
@@ -133,4 +108,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeScreen;
+export default AccountInfo;

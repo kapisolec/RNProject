@@ -1,17 +1,29 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const Task = (props) => {
+    const routeParams = props.routeParams;
+    // console.log(routeParams);
+    // const route = useRoute();
     const navigation = useNavigation();
-
+    // console.log(props);
     return (
-        <TouchableOpacity onPress={() => navigation.navigate(props.children)}>
+        <TouchableOpacity
+            onPress={() =>
+                navigation.navigate('TaskDetails', {
+                    routeParams,
+                    taskId: props._id,
+                })
+            }
+        >
             <View style={styles.item}>
                 <View style={styles.itemLeft}>
                     <TouchableOpacity style={styles.square}></TouchableOpacity>
                     <Text style={styles.itemText}>{props.children}</Text>
-                    <Text style={styles.itemTextData}>{props.data}</Text>
+                    <Text style={styles.itemTextData}>
+                        Utworzono: {props.data}
+                    </Text>
                 </View>
                 <View style={styles.circular}></View>
             </View>

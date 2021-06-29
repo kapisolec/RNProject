@@ -6,86 +6,65 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import {
+    NavigationContainer,
+    useNavigation,
+    useRoute,
+} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { initializeDB, clearDB } from './db';
 import ButtonWithNav from './Components/ButtonWithNav.js';
 import ButtonWithoutNav from './Components/ButtonWithoutNav.js';
 import AddNewTask from './Screens/addNewTask';
 import HomeScreen from './Screens/HomeScreen.js';
-import Task from './Screens/Task.js';
-import TaskScreen from './Screens/TaskScreen';
 import Login from './Screens/Login';
 import Register from './Screens/Register';
+import MainScreen from './Screens/MainScreen';
+import AccountInfo from './Screens/AccountInfo';
+import EditAccount from './Screens/EditAccount';
+import TaskScreen from './Screens/TaskScreen';
+import EditTask from './Screens/EditTask';
 
 const Stack = createStackNavigator();
 
 export default function App() {
-    const [tasks, setTasks] = useState([]);
-    useEffect(() => {
-        initializeDB().then((data) => setTasks(data));
-    }, [tasks]);
-
-    const taskArr = tasks.map((task) => {
-        return (
-            <Task key={task._id} data={task.date}>
-                {task.task}
-            </Task>
-        );
-    });
-
-    const taskScreenArr = tasks.map((task) => {
-        return (
-            <Stack.Screen name={task.task} key={task._id}>
-                {() => (
-                    <TaskScreen
-                        task={task.task}
-                        description={task.description}
-                        date={task.date}
-                    />
-                )}
-            </Stack.Screen>
-        );
-    });
-
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                {/* <Stack.Screen name="Login" component={Login} /> */}
-                <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen
-                    name="HomeScreen"
+                    name="Register"
+                    component={Register}
                     options={{
                         headerLeft: false,
                     }}
-                >
+                />
+                <Stack.Screen
+                    name="Login"
+                    component={Login}
+                    options={{
+                        headerLeft: false,
+                    }}
+                />
+                <Stack.Screen
+                    name="MainScreen"
+                    component={MainScreen}
+                    options={{
+                        headerLeft: false,
+                    }}
+                />
+                <Stack.Screen name="AccountInfo" component={AccountInfo} />
+                <Stack.Screen name="EditAccount" component={EditAccount} />
+                <Stack.Screen name="EditTask" component={EditTask} />
+                <Stack.Screen name="HomeScreen">
                     {() => (
                         <View>
-                            <ScrollView>
-                                {<HomeScreen>{taskArr}</HomeScreen>}
-                            </ScrollView>
-                            <View style={styles.buttonsContainer}>
-                                <ButtonWithNav navigateTo="addNewTask">
-                                    Add new task
-                                </ButtonWithNav>
-                                <ButtonWithoutNav
-                                    onClick={() => {
-                                        const result = clearDB();
-                                        result === true
-                                            ? setTasks([])
-                                            : console.log(result);
-                                    }}
-                                >
-                                    Delete all tasks
-                                </ButtonWithoutNav>
-                            </View>
+                            <ScrollView>{<HomeScreen />}</ScrollView>
                         </View>
                     )}
                 </Stack.Screen>
-                {taskScreenArr}
-                <Stack.Screen name="addNewTask">
-                    {() => <AddNewTask taskState={[tasks, setTasks]} />}
-                </Stack.Screen>
+                <Stack.Screen name="TaskDetails" component={TaskScreen} />
+
+                <Stack.Screen name="addNewTask" component={AddNewTask} />
             </Stack.Navigator>
         </NavigationContainer>
     );

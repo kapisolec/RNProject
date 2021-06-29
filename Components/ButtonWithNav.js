@@ -11,24 +11,30 @@ import {
 
 function ButtonWithNav(props) {
     const navigation = useNavigation();
+
     const buttonStyle = StyleSheet.create({
         item: {
-            backgroundColor: '#55BCF6',
+            backgroundColor: '#f56618',
             padding: 15,
-            borderRadius: 10,
+            alignSelf: 'center',
+            width: 250,
+            borderRadius: 100,
             marginBottom: 20,
-            marginHorizontal: 25,
+            marginHorizontal: 10,
+            marginTop: 20,
         },
         text: {
+            color: 'white',
             textAlign: 'center',
             fontSize: 18,
-            color: 'black',
+            fontWeight: 'bold',
         },
     });
+
     return (
         <TouchableOpacity
             style={props.style ? props.style : buttonStyle.item}
-            onPress={() => navigation.navigate(props.navigateTo)}
+            onPress={() => navigation.navigate(props.navigateTo, props.data)}
         >
             <Text style={props.textStyle ? props.textStyle : buttonStyle.text}>
                 {props.children}

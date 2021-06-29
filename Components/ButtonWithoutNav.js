@@ -12,16 +12,30 @@ import {
 function ButtonWithoutNav(props) {
     const buttonStyle = StyleSheet.create({
         item: {
-            backgroundColor: '#55BCF6',
+            backgroundColor: '#f56618',
             padding: 15,
-            borderRadius: 10,
+            alignSelf: 'center',
+            width: 250,
+            borderRadius: 100,
             marginBottom: 20,
-            marginHorizontal: 25,
+            marginHorizontal: 10,
+            marginTop: 20,
+        },
+        text: {
+            color: 'white',
+            textAlign: 'center',
+            fontSize: 18,
+            fontWeight: 'bold',
         },
     });
     return (
-        <TouchableOpacity style={buttonStyle.item} onPress={props.onClick}>
-            <Text>{props.children}</Text>
+        <TouchableOpacity
+            style={props.style ? props.style : buttonStyle.item}
+            onPress={props.onClick}
+        >
+            <Text style={props.textStyle ? props.textStyle : buttonStyle.text}>
+                {props.children}
+            </Text>
         </TouchableOpacity>
     );
 }

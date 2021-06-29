@@ -3,43 +3,46 @@ import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity,
     TextInput,
+    TouchableOpacity,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
-import ButtonWithNav from '../Components/ButtonWithNav';
-import ButtonWithoutNav from '../Components/ButtonWithoutNav';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
+import { useState, useEffect } from 'react';
+import ButtonWithoutNav from '../Components/ButtonWithoutNav';
+import ButtonWithNav from '../Components/ButtonWithNav';
 
-function Login(props) {
+function EditAccount(props) {
     const navigation = useNavigation();
+    const route = useRoute();
     const [state, setState] = useState({
         email: '',
         password: '',
     });
 
-    const handleLogin = () => {
+    const handleAccountEdit = () => {
         if (state.email === '' || state.password === '') return;
-        // console.log(state);
+        console.log(state);
+        console.log(route.params.token);
         axios
-            .post('https://kmaj-task-manager.herokuapp.com/users/login', state)
+            .patch('https://kmaj-task-manager.herokuapp.com/users/me', state, {
+                headers: { Authorization: `Bearer ${route.params.token}` },
+            })
             .then((e) => {
-                // console.log(e.data);
-                const dataToPass = e.data;
-                navigation.navigate('MainScreen', dataToPass);
+                navigation.navigate('MainScreen');
             })
             .catch((error) => console.log(error));
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Please log in</Text>
+            <Text style={styles.title}>Edit account</Text>
             <View style={styles.inputContainer}>
                 <View style={styles.loginDiv}>
                     <TextInput
                         style={styles.inputs}
-                        placeholder="email"
+                        passwordRules="true"
+                        placeholder="E-mail"
                         onChangeText={(text) =>
                             setState({ ...state, email: text })
                         }
@@ -48,7 +51,7 @@ function Login(props) {
                 <View style={styles.loginDiv}>
                     <TextInput
                         style={styles.inputs}
-                        secureTextEntry
+                        secureTextEntry={true}
                         passwordRules="true"
                         placeholder="Password"
                         onChangeText={(text) =>
@@ -60,17 +63,10 @@ function Login(props) {
             <ButtonWithoutNav
                 style={styles.button}
                 textStyle={styles.btnText}
-                onClick={handleLogin}
+                onClick={handleAccountEdit}
             >
-                Login
+                Submit
             </ButtonWithoutNav>
-            <ButtonWithNav
-                style={styles.buttonToLogin}
-                textStyle={styles.btnText}
-                navigateTo="Register"
-            >
-                Click here to register
-            </ButtonWithNav>
         </View>
     );
 }
@@ -124,7 +120,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         marginBottom: 20,
         marginHorizontal: 25,
-        marginTop: 50,
+        // marginTop: 50,
     },
     btnText: {
         color: 'white',
@@ -136,5 +132,4 @@ const styles = StyleSheet.create({
         marginTop: 100,
     },
 });
-
-export default Login;
+export default EditAccount;
