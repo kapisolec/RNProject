@@ -4,10 +4,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 const Task = (props) => {
     const routeParams = props.routeParams;
-    // console.log(routeParams);
-    // const route = useRoute();
     const navigation = useNavigation();
-    // console.log(props);
+
     return (
         <TouchableOpacity
             onPress={() =>
@@ -25,7 +23,13 @@ const Task = (props) => {
                         Utworzono: {props.data}
                     </Text>
                 </View>
-                <View style={styles.circular}></View>
+                <View
+                    style={
+                        props.completed === true
+                            ? styles.circularDone
+                            : styles.circularNotDone
+                    }
+                ></View>
             </View>
         </TouchableOpacity>
     );
@@ -49,8 +53,8 @@ const styles = StyleSheet.create({
     square: {
         width: 24,
         height: 24,
-        backgroundColor: '#55BCF6',
-        opacity: 0.4,
+        backgroundColor: '#f56618',
+        opacity: 0.9,
         borderRadius: 5,
         marginRight: 15,
     },
@@ -61,11 +65,18 @@ const styles = StyleSheet.create({
         maxWidth: '80%',
         marginLeft: 15,
     },
-    circular: {
+    circularDone: {
         width: 12,
         height: 12,
-        borderColor: '#55BCF6',
-        borderWidth: 2,
+        borderColor: 'green',
+        borderWidth: 7,
+        borderRadius: 5,
+    },
+    circularNotDone: {
+        width: 12,
+        height: 12,
+        borderColor: 'red',
+        borderWidth: 7,
         borderRadius: 5,
     },
 });

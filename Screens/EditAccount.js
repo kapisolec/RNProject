@@ -16,14 +16,16 @@ function EditAccount(props) {
     const navigation = useNavigation();
     const route = useRoute();
     const [state, setState] = useState({
-        email: '',
+        email: route.params.user.email,
         password: '',
     });
 
+    console.log(route.params.user.email);
+
     const handleAccountEdit = () => {
-        if (state.email === '' || state.password === '') return;
         console.log(state);
-        console.log(route.params.token);
+        if (state.email === '' && state.password === '') return;
+        if (state.email === '') state.email = route.params.user.email;
         axios
             .patch('https://kmaj-task-manager.herokuapp.com/users/me', state, {
                 headers: { Authorization: `Bearer ${route.params.token}` },
@@ -42,7 +44,7 @@ function EditAccount(props) {
                     <TextInput
                         style={styles.inputs}
                         passwordRules="true"
-                        placeholder="E-mail"
+                        placeholder={route.params.user.email}
                         onChangeText={(text) =>
                             setState({ ...state, email: text })
                         }

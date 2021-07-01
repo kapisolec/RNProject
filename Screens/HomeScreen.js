@@ -1,6 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+    useNavigation,
+    useRoute,
+    useFocusEffect,
+} from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import Task from './Task';
 import axios from 'axios';
@@ -12,18 +16,21 @@ function HomeScreen(props) {
 
     // console.log(route.params);
 
-    useEffect(() => {
+    useFocusEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get(
-                'https://kmaj-task-manager.herokuapp.com/task',
-                {
-                    headers: { Authorization: `Bearer ${route.params.token}` },
-                }
-            );
-            setTasks(result.data);
+            axios
+                .get(
+                    'https://kmaj-task-manager.herokuapp.com/task?sortBy=completed_desc',
+                    {
+                        headers: {
+                            Authorization: `Bearer ${route.params.token}`,
+                        },
+                    }
+                )
+                .then((result) => setTasks(result.data));
         };
         fetchData();
-    }, [tasks]);
+    });
 
     const taskArr = tasks.map((task) => {
         let taskDate = new Date(task.createdAt);
@@ -37,6 +44,7 @@ function HomeScreen(props) {
                 : '0' + taskDate.getMinutes();
 
         const time =
+            '0' +
             taskDate.getDate() +
             '.' +
             '0' +
@@ -49,6 +57,7 @@ function HomeScreen(props) {
             <Task
                 key={task._id}
                 _id={task._id}
+                completed={task.completed}
                 data={time}
                 routeParams={route.params}
             >
@@ -63,9 +72,11 @@ function HomeScreen(props) {
                 <Text style={styles.sectionTitle}>Tasks:</Text>
                 <View style={styles.items}>{taskArr}</View>
             </View>
-            <ButtonWithNav navigateTo="addNewTask" data={route.params}>
-                Add new task
-            </ButtonWithNav>
+            <View style={styles.btnMargin}>
+                <ButtonWithNav navigateTo="addNewTask" data={route.params}>
+                    Add new task
+                </ButtonWithNav>
+            </View>
         </View>
     );
 }
@@ -100,13 +111,7 @@ const styles = StyleSheet.create({
         maxWidth: '80%',
         marginLeft: 15,
     },
-    circular: {
-        width: 12,
-        height: 12,
-        borderColor: '#55BCF6',
-        borderWidth: 2,
-        borderRadius: 5,
-    },
+
     buttonsContainer: {
         flexDirection: 'row',
         position: 'absolute',
@@ -118,18 +123,27 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        paddingBottom: 30,
+        flexGrow: 1,
+        alignContent: 'center',
+        textAlign: 'center',
+        backgroundColor: '#282f3b',
     },
     taskWrapper: {
-        paddingTop: 40,
         paddingHorizontal: 20,
     },
     sectionTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        alignSelf: 'center',
+        color: 'white',
+        fontSize: 32,
+        textAlign: 'center',
+        marginTop: 30,
+        color: '#f56618',
     },
     items: {
         marginTop: 30,
+    },
+    btnMargin: {
+        marginBottom: 50,
     },
 });
 

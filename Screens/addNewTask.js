@@ -10,6 +10,7 @@ import {
     TextInput,
     CheckBox,
 } from 'react-native';
+import ButtonWithoutNav from '../Components/ButtonWithoutNav';
 
 const AddNewTask = (props) => {
     const navigation = useNavigation();
@@ -20,27 +21,31 @@ const AddNewTask = (props) => {
         completed: false,
     });
 
-    const handleAddingTask = () => {
+    const handleAddingTask = async () => {
         if (state.description == '') return;
         console.log(state);
-        axios
-            .post('https://kmaj-task-manager.herokuapp.com/task', state, {
-                headers: {
-                    Authorization: `Bearer ${props.route.params.token}`,
-                },
-            })
-            .then((e) => {
-                // console.log(e.data);
-                navigation.navigate('HomeScreen');
-            })
-            .catch((error) => console.log(error));
+        try {
+            const result = await axios.post(
+                'https://kmaj-task-manager.herokuapp.com/task',
+                state,
+                {
+                    headers: {
+                        Authorization: `Bearer ${props.route.params.token}`,
+                    },
+                }
+            );
+            navigation.navigate('HomeScreen');
+        } catch (error) {
+            console.log(error);
+        }
     };
     console.log(state);
 
     return (
         <View>
-            <Text style={styles.description}>Task:</Text>
+            <Text style={styles.title}>Add new task</Text>
             <TextInput
+                placeholder="Task"
                 style={styles.textInput}
                 onChangeText={(text) =>
                     setState({ ...state, description: text })
@@ -48,59 +53,48 @@ const AddNewTask = (props) => {
             />
             <Text style={styles.description}>Completed:</Text>
             <CheckBox
-                style={styles.textInput}
+                style={styles.checkBoxInput}
                 value={state.completed}
                 onValueChange={(status) =>
                     setState({ ...state, completed: status })
                 }
             />
-            <TouchableOpacity style={styles.button} onPress={handleAddingTask}>
-                <Text>Add</Text>
-            </TouchableOpacity>
+            <ButtonWithoutNav onClick={handleAddingTask}>Add</ButtonWithoutNav>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    button: {
-        backgroundColor: '#55BCF6',
-        padding: 15,
-        paddingHorizontal: 60,
-        borderRadius: 10,
-        marginBottom: 20,
-        marginTop: 30,
+    checkBoxInput: {
         alignSelf: 'center',
+        borderRadius: 100,
+        marginBottom: 100,
+    },
+    title: {
+        fontSize: 36,
+        // fontFamily: 'Helvetica',
+        textAlign: 'center',
+        marginTop: 30,
+        color: '#f56618',
     },
     textInput: {
-        textAlign: 'center',
-        height: 60,
+        alignSelf: 'center',
+        paddingVertical: 10,
+        width: 300,
+        // paddingHorizontal: 150,
+        backgroundColor: '#3c485c',
+        marginTop: 120,
         fontSize: 18,
-        backgroundColor: '#FFF',
-        paddingTop: 15,
-        paddingBottom: 15,
-        borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-        marginHorizontal: 30,
-        paddingHorizontal: 25,
+        fontWeight: '100',
+        textAlign: 'center',
+        borderRadius: 100,
     },
-    descriptionTextBox: {
-        backgroundColor: '#FFF',
-        paddingTop: 15,
-        paddingBottom: 15,
-        borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-    },
+
     description: {
-        marginLeft: 30,
-        marginTop: 5,
-        marginBottom: 15,
+        margin: 30,
         fontSize: 24,
+        color: '#f56618',
+        alignSelf: 'center',
     },
     descriptionText: {
         marginLeft: 30,

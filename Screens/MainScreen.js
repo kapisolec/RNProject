@@ -49,16 +49,23 @@ const styles = StyleSheet.create({
         paddingVertical: 30,
     },
     container: {
-        flex: 1,
-        paddingBottom: 30,
+        alignContent: 'center',
+        textAlign: 'center',
+        backgroundColor: '#282f3b',
+        height: 1000,
     },
     taskWrapper: {
         paddingTop: 40,
         paddingHorizontal: 20,
     },
     sectionTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        alignSelf: 'center',
+        marginBottom: 100,
+        color: 'white',
+        fontSize: 32,
+        textAlign: 'center',
+        marginTop: 30,
+        color: '#f56618',
     },
     items: {
         marginTop: 30,

@@ -36,6 +36,7 @@ export default function App() {
                     component={Register}
                     options={{
                         headerLeft: false,
+                        headerShown: false,
                     }}
                 />
                 <Stack.Screen
@@ -43,6 +44,7 @@ export default function App() {
                     component={Login}
                     options={{
                         headerLeft: false,
+                        headerShown: false,
                     }}
                 />
                 <Stack.Screen
@@ -50,21 +52,63 @@ export default function App() {
                     component={MainScreen}
                     options={{
                         headerLeft: false,
+                        headerShown: false,
                     }}
                 />
-                <Stack.Screen name="AccountInfo" component={AccountInfo} />
-                <Stack.Screen name="EditAccount" component={EditAccount} />
-                <Stack.Screen name="EditTask" component={EditTask} />
-                <Stack.Screen name="HomeScreen">
+                <Stack.Screen
+                    name="AccountInfo"
+                    component={AccountInfo}
+                    options={{
+                        cardStyle: { backgroundColor: '#282f3b' },
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen
+                    name="EditAccount"
+                    component={EditAccount}
+                    options={{
+                        cardStyle: { backgroundColor: '#282f3b' },
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen
+                    name="EditTask"
+                    component={EditTask}
+                    options={{
+                        cardStyle: { backgroundColor: '#282f3b' },
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen
+                    name="HomeScreen"
+                    options={{
+                        cardStyle: { backgroundColor: '#282f3b' },
+                        headerShown: false,
+                    }}
+                >
                     {() => (
                         <View>
                             <ScrollView>{<HomeScreen />}</ScrollView>
                         </View>
                     )}
                 </Stack.Screen>
-                <Stack.Screen name="TaskDetails" component={TaskScreen} />
+                <Stack.Screen
+                    name="TaskDetails"
+                    component={TaskScreen}
+                    options={{
+                        cardStyle: { backgroundColor: '#282f3b' },
+                        headerShown: false,
+                    }}
+                />
 
-                <Stack.Screen name="addNewTask" component={AddNewTask} />
+                <Stack.Screen
+                    name="addNewTask"
+                    component={AddNewTask}
+                    options={{
+                        cardStyle: { backgroundColor: '#282f3b' },
+                        headerShown: false,
+                    }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );
@@ -83,6 +127,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingBottom: 30,
+        flexGrow: 1,
     },
     taskWrapper: {
         paddingTop: 40,

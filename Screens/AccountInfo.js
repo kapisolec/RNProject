@@ -6,6 +6,31 @@ import { useState, useEffect } from 'react';
 import ButtonWithoutNav from '../Components/ButtonWithoutNav';
 import ButtonWithNav from '../Components/ButtonWithNav';
 
+function calculateTime(date) {
+    let hours =
+        String(date.getHours()).length > 1
+            ? date.getHours()
+            : '0' + date.getHours();
+    let minutes =
+        String(date.getMinutes()).length > 1
+            ? date.getMinutes()
+            : '0' + date.getMinutes();
+
+    const time =
+        '0' +
+        date.getDate() +
+        '.' +
+        '0' +
+        date.getMonth() +
+        '.' +
+        date.getFullYear() +
+        ' ' +
+        hours +
+        ':' +
+        minutes;
+    return time;
+}
+
 function AccountInfo(props) {
     const route = useRoute();
     const [accountInfo, setAccountInfo] = useState({});
@@ -24,87 +49,69 @@ function AccountInfo(props) {
         };
         fetchData();
     }, []);
-    console.log(accountInfo);
+
+    let accountCreatedAt = new Date(accountInfo.createdAt);
+    let accountUpdatedAt = new Date(accountInfo.updatedAt);
+    accountCreatedAt = calculateTime(accountCreatedAt);
+    accountUpdatedAt = calculateTime(accountUpdatedAt);
+    route.params.user = { ...accountInfo };
+
     return (
         <View style={styles.container}>
             <View style={styles.taskWrapper}>
-                <Text style={styles.sectionTitle}>
-                    Witaj {accountInfo.name}
+                <Text style={styles.sectionTitleWhite}>
+                    Witaj {accountInfo.name}!
                 </Text>
-                <Text style={styles.sectionTitle}>E-mail:</Text>
-                <Text>{accountInfo.email}</Text>
-                <Text style={styles.sectionTitle}>Konto stworzono:</Text>
-                <Text>{accountInfo.createdAt}</Text>
-                <Text style={styles.sectionTitle}>Ostatnia edycja konta:</Text>
-                <Text>{accountInfo.updatedAt}</Text>
-                <ButtonWithNav navigateTo="EditAccount" data={route.params}>
-                    Edytuj konto
-                </ButtonWithNav>
+                <Text style={styles.sectionSubTitle}>E-mail:</Text>
+                <Text style={styles.text}>{accountInfo.email}</Text>
+                <Text style={styles.sectionSubTitle}>Konto stworzono:</Text>
+                <Text style={styles.text}>
+                    {accountCreatedAt.startsWith('0N') ? '' : accountCreatedAt}
+                </Text>
+                <Text style={styles.sectionSubTitle}>
+                    Ostatnia edycja konta:
+                </Text>
+                <Text style={styles.text}>
+                    {accountUpdatedAt.startsWith('0N') ? '' : accountUpdatedAt}
+                </Text>
             </View>
+            <ButtonWithNav navigateTo="EditAccount" data={route.params}>
+                Edytuj konto
+            </ButtonWithNav>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    item: {
-        backgroundColor: '#FFF',
-        padding: 15,
-        borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 20,
+    sectionTitle: {
+        fontSize: 32,
+        // fontFamily: 'Helvetica',
+        textAlign: 'center',
+        marginTop: 30,
+        color: '#f56618',
     },
-    itemLeft: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        flexWrap: 'wrap',
+    sectionTitleWhite: {
+        fontSize: 32,
+        // fontFamily: 'Helvetica',
+        textAlign: 'center',
+        marginTop: 30,
+        color: 'white',
     },
-    square: {
-        width: 24,
-        height: 24,
-        backgroundColor: '#55BCF6',
-        opacity: 0.4,
-        borderRadius: 5,
-        marginRight: 15,
+    sectionSubTitle: {
+        fontSize: 24,
+        // fontFamily: 'Helvetica',
+        textAlign: 'center',
+        marginTop: 30,
+        color: '#f56618',
     },
-    itemText: {
-        maxWidth: '80%',
-    },
-    itemTextData: {
-        maxWidth: '80%',
-        marginLeft: 15,
-    },
-    circular: {
-        width: 12,
-        height: 12,
-        borderColor: '#55BCF6',
-        borderWidth: 2,
-        borderRadius: 5,
-    },
-    buttonsContainer: {
-        flexDirection: 'row',
-        position: 'absolute',
-        backgroundColor: '#eee',
-        top: 550,
-        alignSelf: 'center',
-        paddingHorizontal: 50,
-        paddingVertical: 30,
-    },
-    container: {
-        flex: 1,
-        paddingBottom: 30,
+    text: {
+        color: 'white',
+        fontSize: 22,
+        fontWeight: '100',
+        textAlign: 'center',
     },
     taskWrapper: {
-        paddingTop: 40,
-        paddingHorizontal: 20,
-    },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
-    },
-    items: {
-        marginTop: 30,
+        marginVertical: 40,
     },
 });
 

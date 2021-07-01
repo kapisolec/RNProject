@@ -10,6 +10,7 @@ import {
     TextInput,
     CheckBox,
 } from 'react-native';
+import ButtonWithoutNav from '../Components/ButtonWithoutNav';
 
 const EditTask = (props) => {
     const navigation = useNavigation();
@@ -41,68 +42,46 @@ const EditTask = (props) => {
 
     return (
         <View>
-            <Text style={styles.description}>Completed:</Text>
+            <Text style={styles.sectionSubTitle}>Completed:</Text>
             <CheckBox
-                style={styles.textInput}
                 value={state.completed}
+                style={styles.sectionTitle}
                 onValueChange={(status) =>
                     setState({ ...state, completed: status })
                 }
             />
-            <TouchableOpacity style={styles.button} onPress={handleUpdateTask}>
-                <Text>Add</Text>
-            </TouchableOpacity>
+            <ButtonWithoutNav onClick={handleUpdateTask}>
+                Submit
+            </ButtonWithoutNav>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    button: {
-        backgroundColor: '#55BCF6',
-        padding: 15,
-        paddingHorizontal: 60,
-        borderRadius: 10,
-        marginBottom: 20,
-        marginTop: 30,
+    sectionTitle: {
+        fontSize: 32,
+        // fontFamily: 'Helvetica',
         alignSelf: 'center',
-    },
-    textInput: {
         textAlign: 'center',
-        height: 60,
-        fontSize: 18,
-        backgroundColor: '#FFF',
-        paddingTop: 15,
-        paddingBottom: 15,
-        borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-        marginHorizontal: 30,
-        paddingHorizontal: 25,
+        marginVertical: 50,
+        color: '#f56618',
     },
-    descriptionTextBox: {
-        backgroundColor: '#FFF',
-        paddingTop: 15,
-        paddingBottom: 15,
-        borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-    },
-    description: {
-        marginLeft: 30,
-        marginTop: 5,
-        marginBottom: 15,
+    sectionSubTitle: {
         fontSize: 24,
+        // fontFamily: 'Helvetica',
+        textAlign: 'center',
+        marginTop: 120,
+        color: '#f56618',
     },
-    descriptionText: {
-        marginLeft: 30,
-        marginRight: 30,
-        fontSize: 18,
+    text: {
+        color: 'white',
+        fontSize: 22,
+        fontWeight: '100',
+        textAlign: 'center',
     },
-    data: { marginLeft: 30, marginRight: 30, fontSize: 18 },
+    taskWrapper: {
+        marginVertical: 40,
+    },
 });
 
 export default EditTask;

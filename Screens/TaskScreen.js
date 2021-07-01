@@ -49,6 +49,7 @@ const TaskScreen = (props) => {
 
     const timestamp = new Date(tasks.createdAt);
     const time =
+        '0' +
         timestamp.getDate() +
         '.' +
         '0' +
@@ -60,24 +61,27 @@ const TaskScreen = (props) => {
     console.log(time);
     return (
         <View>
-            <Text style={styles.description}>Description:</Text>
-            <View style={styles.descriptionTextBox}>
-                <Text style={styles.descriptionText}>{tasks.description}</Text>
-            </View>
+            <View style={styles.taskWrapper}>
+                <Text style={styles.sectionSubTitle}>Description:</Text>
+                <View>
+                    <Text style={styles.text}>{tasks.description}</Text>
+                </View>
 
-            <Text style={styles.description}>Created:</Text>
-            <View style={styles.descriptionTextBox}>
-                <Text style={styles.data}>{time[0] != 'N' ? time : ''}</Text>
+                <Text style={styles.sectionSubTitle}>Created:</Text>
+                <View>
+                    <Text style={styles.text}>
+                        {time.startsWith('0N') ? '' : time}
+                    </Text>
+                </View>
+                <Text style={styles.sectionSubTitle}>Completed:</Text>
+                <View>
+                    <Text style={styles.text}>
+                        {String(tasks.completed) == 'undefined'
+                            ? ''
+                            : String(tasks.completed)}
+                    </Text>
+                </View>
             </View>
-            <Text style={styles.description}>Completed:</Text>
-            <View style={styles.descriptionTextBox}>
-                <Text style={styles.descriptionText}>
-                    {String(tasks.completed) == 'undefined'
-                        ? ''
-                        : String(tasks.completed)}
-                </Text>
-            </View>
-
             <ButtonWithNav
                 navigateTo="EditTask"
                 data={{
@@ -98,27 +102,29 @@ const TaskScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-    descriptionTextBox: {
-        backgroundColor: '#FFF',
-        paddingTop: 15,
-        paddingBottom: 15,
-        borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 20,
+    sectionTitle: {
+        fontSize: 32,
+        // fontFamily: 'Helvetica',
+        textAlign: 'center',
+        marginTop: 30,
+        color: '#f56618',
     },
-    description: {
-        margin: 30,
-        marginBottom: 15,
+    sectionSubTitle: {
         fontSize: 24,
+        // fontFamily: 'Helvetica',
+        textAlign: 'center',
+        marginTop: 30,
+        color: '#f56618',
     },
-    descriptionText: {
-        marginLeft: 30,
-        marginRight: 30,
-        fontSize: 18,
+    text: {
+        color: 'white',
+        fontSize: 22,
+        fontWeight: '100',
+        textAlign: 'center',
     },
-    data: { marginLeft: 30, marginRight: 30, fontSize: 18 },
+    taskWrapper: {
+        marginVertical: 40,
+    },
 });
 
 export default TaskScreen;
